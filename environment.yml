@@ -37,3 +37,5 @@ dependencies:
       - openai>=2,<3
       - httpx==0.27.2
       - python-dotenv
+      - tenacity
+      - -e ../open-eqa

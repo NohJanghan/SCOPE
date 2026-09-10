@@ -1,0 +1,13 @@
+# OpenEQA LLM-Match evaluation
+dataset: "data/aeqa_questions-184.json"
+
+# Navigation results
+exp_name: "exp_eval_aeqa"
+output_parent_dir: "results"
+gpt_answer: "gpt_answer.json"
+path_length: "path_length_list.pkl"
+gt_path_length: "data/gt_path_length.json"
+
+# Evaluation output and Ollama judge model
+output: "llm_match.json"
+model: "gemma4:26b"

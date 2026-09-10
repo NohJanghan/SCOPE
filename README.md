@@ -75,7 +75,20 @@ python run_aeqa_evaluation.py -cf cfg/eval_aeqa.yaml --start_ratio 0.0 --end_rat
 ```
 After the scripts finish, the results from all splits will be automatically aggregated and saved.
 
-To evaluate the predictions with the pipeline from OpenEQA, you can refer to [3D-Mem-AEQA-Eval](https://github.com/yyuncong/3D-Mem-AEQA-Eval).
+Install the sibling OpenEQA package and evaluate the generated answers:
+
+```bash
+pip install -e ../open-eqa
+python llm_match.py -cf cfg/openeqa.yaml
+```
+
+The included blind-LLM cache covers the 184-question dataset for the qwen model
+configured in `../3dmem/.env`. If the answer or judge model changes, regenerate
+the cache first:
+
+```bash
+python llm_match.py --prepare -cf cfg/openeqa.yaml
+```
 
 ### 3 - Run Evaluation on GOAT-Bench
 You can directly run the following script:

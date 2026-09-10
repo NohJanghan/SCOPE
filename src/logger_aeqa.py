@@ -206,9 +206,13 @@ class Logger:
     def aggregate_results(self):
         # aggregate the results from different splits into a single file
         success_list = []
+        fail_list = []
         path_length_list = {}
         all_success_list_paths = glob.glob(
             os.path.join(self.output_dir, "success_list_*.pkl")
+        )
+        all_fail_list_paths = glob.glob(
+            os.path.join(self.output_dir, "fail_list_*.pkl")
         )
         all_path_length_list_paths = glob.glob(
             os.path.join(self.output_dir, "path_length_list_*.pkl")
@@ -216,12 +220,17 @@ class Logger:
         for success_list_path in all_success_list_paths:
             with open(success_list_path, "rb") as f:
                 success_list += pickle.load(f)
+        for fail_list_path in all_fail_list_paths:
+            with open(fail_list_path, "rb") as f:
+                fail_list += pickle.load(f)
         for path_length_list_path in all_path_length_list_paths:
             with open(path_length_list_path, "rb") as f:
                 path_length_list.update(pickle.load(f))
 
         with open(os.path.join(self.output_dir, "success_list.pkl"), "wb") as f:
             pickle.dump(success_list, f)
+        with open(os.path.join(self.output_dir, "fail_list.pkl"), "wb") as f:
+            pickle.dump(fail_list, f)
         with open(os.path.join(self.output_dir, "path_length_list.pkl"), "wb") as f:
             pickle.dump(path_length_list, f)
 
