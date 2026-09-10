@@ -32,7 +32,7 @@ conda install -c conda-forge -c aihabitat habitat-sim=0.2.5 headless faiss-cpu=1
 conda install https://anaconda.org/pytorch3d/pytorch3d/0.7.8/download/linux-64/pytorch3d-0.7.8-py39_cu118_pyt241.tar.bz2 -y
 
 pip install omegaconf==2.3.0 open-clip-torch==2.26.1 ultralytics==8.2.31 supervision==0.21.0 opencv-python-headless==4.10.* \
- scikit-learn==1.4 scikit-image==0.22 open3d==0.18.0 hipart==1.0.4 openai==1.35.3 httpx==0.27.2                                                      
+ scikit-learn==1.4 scikit-image==0.22 open3d==0.18.0 hipart==1.0.4 "openai>=2,<3" httpx==0.27.2 python-dotenv
 ```
 
 ### Option 2: Using environment.yml
@@ -53,13 +53,15 @@ conda activate scope
 
 #### Dataset
 Please download the train and val split of [HM3D](https://aihabitat.org/datasets/hm3d-semantics/), and specify
-the path in `cfg/eval_goatbench.yaml`. For example, if your download path is `/your_path/hm3d/` that 
-contains `/your_path/hm3d/train/` and `/your_path/hm3d/val/`, you can set the `scene_data_path` in the config files as `/your_path/hm3d/`.
+the path in the evaluation config. For example, if your download path is `/your_path/hm3d/` that
+contains `/your_path/hm3d/train/` and `/your_path/hm3d/val/`, set `scene_data_path` in the config file to `/your_path/hm3d/`.
 
-#### OpenAI API Setup
-Please set up the endpoint and API key for the OpenAI API in `src/const.py`.
+#### VLM API Setup
+The A-EQA pipeline reads the Ollama endpoint and qwen model settings directly
+from `../3dmem/.env` (`END_POINT`, `OPENAI_KEY`, `VLM_MODEL`, and
+`CG_VLM_MODEL`).
 
-<!-- ### 2 - Run Evaluation on A-EQA
+### 2 - Run Evaluation on A-EQA
 
 First run the following script to generate the predictions for the A-EQA dataset:
 
@@ -73,9 +75,9 @@ python run_aeqa_evaluation.py -cf cfg/eval_aeqa.yaml --start_ratio 0.0 --end_rat
 ```
 After the scripts finish, the results from all splits will be automatically aggregated and saved.
 
-To evaluate the predictions with the pipeline from OpenEQA, you can refer to [link](https://github.com/yyuncong/3D-Mem-AEQA-Eval) -->
+To evaluate the predictions with the pipeline from OpenEQA, you can refer to [3D-Mem-AEQA-Eval](https://github.com/yyuncong/3D-Mem-AEQA-Eval).
 
-### 2 - Run Evaluation on GOAT-Bench
+### 3 - Run Evaluation on GOAT-Bench
 You can directly run the following script:
 ```bash
 python run_goatbench_evaluation.py -cf cfg/eval_goatbench.yaml

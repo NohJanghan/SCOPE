@@ -100,7 +100,7 @@ Do not include any additional information in your response.
 system_prompt = system_prompt_only_top
 
 # gpt_model = "gpt-4-vision-preview"
-gpt_model = "gpt-4o-2024-05-13"
+gpt_model = os.getenv("CG_VLM_MODEL")
 
 
 def get_openai_client():

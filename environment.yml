@@ -15,9 +15,10 @@ dependencies:
   - torchvision=0.19.1
   - torchaudio=2.4.1
   - pytorch-cuda=11.8
-  - habitat-sim=0.2.5
+  - habitat-sim=0.3.1
   - headless=2.0
-  - faiss-cpu=1.7.4
+  - libegl=1.7.0
+  - libopengl=1.7.0
   - pytorch3d=0.7.8=py39_cu118_pyt241
   - pip:
       - numpy==1.23.5
@@ -27,9 +28,12 @@ dependencies:
       - supervision==0.21.0
       - opencv-python==4.10.0.84
       - opencv-python-headless==4.10.*
-      - scikit-learn==1.4
+      - scipy==1.13.1
+      - scikit-learn==1.4.0
       - scikit-image==0.22
       - open3d==0.18.0
       - hipart==1.0.4
-      - openai==1.35.3
+      - faiss-cpu==1.7.4
+      - openai>=2,<3
       - httpx==0.27.2
+      - python-dotenv

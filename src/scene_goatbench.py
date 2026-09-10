@@ -19,6 +19,7 @@ from habitat_sim.utils.common import (
 )
 from src.habitat import (
     make_semantic_cfg,
+    make_simple_cfg,
     get_quaternion,
     get_navigable_point_to,
 )
@@ -57,6 +58,8 @@ from src.conceptgraph.utils.model_utils import compute_clip_features_batched
 
 
 class Scene:
+    use_semantic = True
+
     def __init__(
         self,
         scene_id,
@@ -96,12 +99,13 @@ class Scene:
         assert os.path.exists(
             navmesh_path
         ), f"navmesh_path: {navmesh_path} does not exist"
-        assert os.path.exists(
-            semantic_texture_path
-        ), f"semantic_texture_path: {semantic_texture_path} does not exist"
-        assert os.path.exists(
-            scene_semantic_annotation_path
-        ), f"scene_semantic_annotation_path: {scene_semantic_annotation_path} does not exist"
+        if self.use_semantic:
+            assert os.path.exists(
+                semantic_texture_path
+            ), f"semantic_texture_path: {semantic_texture_path} does not exist"
+            assert os.path.exists(
+                scene_semantic_annotation_path
+            ), f"scene_semantic_annotation_path: {scene_semantic_annotation_path} does not exist"
 
         sim_settings = {
             "scene": scene_mesh_path,
@@ -113,7 +117,11 @@ class Scene:
             "scene_dataset_config_file": cfg.scene_dataset_config_path,
             "camera_tilt": cfg.camera_tilt_deg * np.pi / 180,
         }
-        sim_cfg = make_semantic_cfg(sim_settings)
+        sim_cfg = (
+            make_semantic_cfg(sim_settings)
+            if self.use_semantic
+            else make_simple_cfg(sim_settings)
+        )
         self.simulator = habitat_sim.Simulator(sim_cfg)
         self.pathfinder = self.simulator.pathfinder
         self.pathfinder.seed(cfg.seed)
@@ -307,8 +315,8 @@ class Scene:
         pts_voxel,
         img_path,
         frame_idx,
-        semantic_obs=Optional[np.ndarray],
-        gt_target_obj_ids=Optional[List[int]],
+        semantic_obs: Optional[np.ndarray] = None,
+        gt_target_obj_ids: Optional[List[int]] = None,
     ) -> Tuple[np.ndarray, List[int], Dict[int, int]]:
         # return annotated image; the detected object ids in current frame; the object id of the target object (if detected)
         assert not (

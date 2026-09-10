@@ -103,13 +103,14 @@ def get_potential_estimation(metadata, image) -> Optional[str]:
     while True:  # Keep trying indefinitely for rate limits
         try:
             completion = client.chat.completions.create(
-                model="gpt-4o-2024-11-20",
+                model=VLM_MODEL,
                 messages=message_text,
                 temperature=0.7,
                 max_tokens=4096,
                 top_p=0.95,
                 frequency_penalty=0,
                 presence_penalty=0,
+                reasoning_effort="none",
             )
             return completion.choices[0].message.content
         except openai.RateLimitError as e:
